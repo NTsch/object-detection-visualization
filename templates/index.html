@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ground Truth vs Predictions</title>
+    <style>
+        .image-container {
+            display: flex;
+            flex-direction: column; /* Display images and predictions vertically */
+            align-items: center; /* Center-align images and predictions */
+        }
+        .image-box {
+            margin-bottom: 20px; /* Add space between images and predictions */
+            position: relative;
+        }
+        .bounding-box {
+            position: absolute;
+            border: 5px solid red; /* Adjust style as needed */
+        }
+        .prediction-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+        }
+        /* Define CSS classes for different colors based on class_id */
+        .class-0 { border-color: red; }
+        .class-1 { border-color: pink; }
+        .class-2 { border-color: chocolate; }
+        .class-3 { border-color: burlywood; }
+        .class-4 { border-color: olive; }
+        .class-5 { border-color: lime; }
+        .class-6 { border-color: green; }
+        .class-7 { border-color: turquoise; }
+        .class-8 { border-color: seagreen; }
+        .class-9 { border-color: purple; }
+        .class-10 { border-color: yellow; }
+    </style>
+</head>
+<body>
+    <div class="image-container">
+        {% for item in ground_truth_data %}
+            <div class="image-name"><h1>{{ item['image'] }} Ground Truth:</h1></div> {# Display the image name as a caption #}
+            <div class="image-box">
+                <img src="{{ url_for('static', filename='ground_truth/' + item['image']) }}" alt="Ground Truth">
+                {% for annotation in item['annotations'] %}
+                    {% if annotation %}
+                        {% with class_id=annotation[0]|int, x=annotation[1], y=annotation[2], width=annotation[3], height=annotation[4] %}
+                            <div class="bounding-box class-{{ class_id }}" style="top: {{ (y - height/2) * 100 }}%; left: {{ (x - width/2) * 100 }}%; width: {{ width * 100 }}%; height: {{ height * 100 }}%;">
+                                <span class="label">{{ class_names[class_id] }}</span>
+                            </div>
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="image-name"><h1>{{ item['image'] }} Predictions:</h1></div> {# Display the image name as a caption #}
+            <div class="image-box">
+                <img src="{{ url_for('static', filename='predictions/' + item['image']) }}" alt="Predictions">
+                {# You may need to adapt the parsing and rendering of prediction bounding boxes here #}
+            </div>
+            <hr style="width:100%">
+        {% endfor %}
+    </div>
+</body>
+</html>
