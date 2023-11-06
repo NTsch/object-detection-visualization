@@ -62,7 +62,7 @@ image_folder = 'static/ground_truth'
 annotation_folder = 'static/annotations'
 
 # Output folder for annotated images
-output_folder = 'static/annotated_images'
+output_folder = 'static/annotated_ground_truth'
 
 # Path to the "classes.txt" file
 class_file_path = 'static/classes.txt'

@@ -1,50 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ground Truth vs Predictions</title>
-    <style>
-        .image-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-        .image-box {
-            margin-bottom: 20px; /* Add space between images and predictions */
-            position: relative;
-        }
-        .bounding-box {
-            position: absolute;
-            border: 5px solid red; /* Adjust style as needed */
-        }
-        /* Define CSS classes for different colors based on class_id */
-        .class-0 { border-color: red; }
-        .class-1 { border-color: pink; }
-        .class-2 { border-color: chocolate; }
-        .class-3 { border-color: burlywood; }
-        .class-4 { border-color: olive; }
-        .class-5 { border-color: lime; }
-        .class-6 { border-color: green; }
-        .class-7 { border-color: turquoise; }
-        .class-8 { border-color: seagreen; }
-        .class-9 { border-color: purple; }
-        .class-10 { border-color: yellow; }
-    </style>
+    <title>Image Pairs</title>
 </head>
 <body>
-    <div class="image-container">
-        {% for item in ground_truth_data %}
-            
-            <div class="image-box">
-                <img src="{{ url_for('static', filename='annotated_ground_truth/' + item['image']) }}" alt="Ground Truth">
+    <div>
+        {% for annotated, prediction in image_pairs %}
+        <div style="display: flex; align-items: center; flex-direction: column; margin-bottom: 20px;">
+            <h1>{{ annotated }}</h1>
+            <div style="display: flex; align-items: center; margin-top: 10px;">
+                <div style="margin-right: 20px;">
+                    <h2 align="center">Annotated Ground Truth</h2>
+                    <img src="{{ url_for('static', filename='annotated_ground_truth/' ~ annotated) }}" alt="{{ annotated }}">
+                </div>
+                <div>
+                    <h2 align="center">Prediction</h2>
+                    <img src="{{ url_for('static', filename='predictions/' ~ prediction) }}" alt="{{ prediction }}">
+                </div>
             </div>
-            
-            <div class="image-box">
-                <img src="{{ url_for('static', filename='predictions/' + item['image']) }}" alt="Predictions">
-                {# You may need to adapt the parsing and rendering of prediction bounding boxes here #}
-            </div>
-
-            <div class="image-name"><h1>{{ item['image'] }} Ground Truth:</h1></div> {# Display the image name as a caption #}
-            <div class="image-name"><h1>{{ item['image'] }} Predictions:</h1></div> {# Display the image name as a caption #}
-            <!-- <hr style="width:100%"> -->
+            <br/>
+            <hr style="width:50%"> 
+        </div>
         {% endfor %}
     </div>
 </body>
