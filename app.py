@@ -1,3 +1,4 @@
+import create_img
 import os
 import subprocess
 from flask import Flask, render_template
@@ -13,10 +14,7 @@ def get_image_filenames(directory):
     return image_filenames
     
 if not os.path.exists('static/annotated_ground_truth') or not os.listdir('static/annotated_ground_truth'):
-    try:
-        subprocess.run(['python', 'create_img.py'], check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"Error running the script: {e}")
+    create_img.create_annotated_ground_truth()
 
 @app.route('/')
 def display_images():
