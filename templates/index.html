@@ -3,23 +3,42 @@
 <head>
     <title>Image Pairs</title>
 </head>
+<style>
+     table, th, td {
+  border: 20px solid white;
+  border-collapse: collapse;
+  padding: 15px;
+  font-size:200%;
+}
+</style>
 <body>
     <div>
         {% for annotated, prediction in image_pairs %}
-        <div style="display: flex; align-items: center; flex-direction: column; margin-bottom: 20px;">
-            <h1>{{ annotated }}</h1>
-            <div style="display: flex; align-items: center; margin-top: 10px;">
-                <div style="margin-right: 20px;">
-                    <h2 align="center">Annotated Ground Truth</h2>
-                    <img src="{{ url_for('static', filename='annotated_ground_truth/' ~ annotated) }}" alt="{{ annotated }}">
+            <div style="display: flex; align-items: center; flex-direction: column; margin-bottom: 20px;">
+                <h1 style="font-size: 4em;">{{ annotated }}</h1>
+                <div style="display: flex; align-items: center; margin-top: 10px;">
+                    <div style="margin-right: 20px;">
+                        <h2 align="center" style="font-size: 3em;">Annotated Ground Truth</h2>
+                        <img src="{{ url_for('static', filename='annotated_ground_truth/' ~ annotated) }}" alt="{{ annotated }}">
+                    </div>
+                    <div>
+                        <h2 align="center" style="font-size: 3em;">Prediction</h2>
+                        <img src="{{ url_for('static', filename='predictions/' ~ prediction) }}" alt="{{ prediction }}">
+                    </div>
                 </div>
-                <div>
-                    <h2 align="center">Prediction</h2>
-                    <img src="{{ url_for('static', filename='predictions/' ~ prediction) }}" alt="{{ prediction }}">
-                </div>
+                <br/>
             </div>
-            <br/>
-        </div>
+            {% for evaluation in evaluations %}
+                {% if evaluation[0].split('.')[0] == annotated.split('.')[0] %}
+                    <table style="margin-left: auto; margin-right: auto; margin-bottom: 10em;">
+                        <tr>
+                            <th style="background-color: #adebad;">True Positives: {{ evaluation[1] }}</th>
+                            <th style="background-color: #ffad99;">False Positives: {{ evaluation[2] }}</th>
+                            <th style="background-color: #ffad99;">False Negatives: {{ evaluation[3] }}</th>
+                        </tr>
+                    </table>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
     </div>
 </body>
