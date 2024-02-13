@@ -89,5 +89,5 @@ def create_annotated_ground_truth():
             # Superimpose bounding boxes with class names and save the result
             superimpose_bounding_boxes(image_path, bounding_boxes, class_names, output_path)
 
-    print("Processing complete. Annotated images are saved in the 'static/annotated_images' folder.")
+    print(f"Processing complete. Annotated images are saved in the '{output_folder}' folder.")
 
